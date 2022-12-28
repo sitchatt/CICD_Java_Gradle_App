@@ -1,0 +1,34 @@
+## After running "Kubeadm_Kubectl_kubelet_installation.sh" and then "Kubernetes_Configuration.sh" - follow below steps ##
+
+## Initialize master node ##
+## Login to the server to be used as master and make sure that the br_netfilter module is loaded: ##
+
+lsmod | grep br_netfilter
+
+## Enable kubelet service.##
+
+sudo systemctl enable kubelet
+
+## Initialize kubeadm ##
+
+kubeadm init
+
+## {You may face runtime error , refer Solutions.md}
+
+## Configure kubectl using commands in the output: ##
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+## Additional nodes can be added with master using the command in installation output: ##
+
+e.g.- kubeadm join k8s-cluster.computingforgeeks.com:6443 --token sr4l2l.2kvot0pfalh5o4ik \
+    --discovery-token-ca-cert-hash sha256:c692fb047e15883b575bd6710779dc2c5af8073f7cab460abd181fd3ddb29a18 \
+    --control-plane
+(Above command will be there in master, have to run it from worker node)
+
+## Install network plugin on "Master" ##
+## In this we’ll use Calico. You can choose any other supported network plugins.##
+
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
