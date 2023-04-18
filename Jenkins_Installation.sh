@@ -1,7 +1,7 @@
 ## Installing JDK-11 ##
 
-sudo apt update -y
-sudo apt install openjdk-11-jre -y
+sudo apt-get update -y
+sudo apt-get install openjdk-11-jre -y
 java -version
 
 ## Installing Jenkins ##
